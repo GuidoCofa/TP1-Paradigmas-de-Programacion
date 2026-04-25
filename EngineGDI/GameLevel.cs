@@ -45,7 +45,9 @@ namespace EngineGDI
         {
             if (!item.IsActive) return;
 
-            if (player.Collider.CheckCollision(player.PosX, player.PosY, item.PosX, item.PosY, item.Collider))
+            // 1. Refactorización de Colisiones: GameLevel NO tiene acceso a la posición real del Player ni del Item.
+            // GameLevel solo delega la verificación espacial a la Hitbox, asegurando el encapsulamiento.
+            if (player.Collider.CheckCollision(item.Collider))
             {
                 item.ApplyEffect();
                 item.Destroy();

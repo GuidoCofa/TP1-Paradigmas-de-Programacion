@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace EngineGDI
@@ -11,6 +11,10 @@ namespace EngineGDI
 
         public Spawner(List<FallingObject> listToPopulate)
         {
+            // 2. Agregación: El Spawner RECIBE una lista desde el exterior (GameLevel).
+            // El Spawner "usa" esta lista para agregar items, pero NO es dueño de ella.
+            // Si el Spawner es destruido, la lista 'items' en GameLevel sigue existiendo independientemente.
+            // Esto demuestra un ciclo de vida independiente entre Spawner y la lista.
             targetList = listToPopulate;
             rng = new Random();
             spawnTimer = 0f;

@@ -1,31 +1,40 @@
-﻿namespace EngineGDI
+namespace EngineGDI
 {
     public class Hitbox
     {
-        public float OffsetX { get; private set; }
-        public float OffsetY { get; private set; }
-        public float Width { get; private set; }
-        public float Height { get; private set; }
+        // 1. Encapsulamiento Estricto: Las variables de tamaño y offset son privadas.
+        private float offsetX;
+        private float offsetY;
+        private float width;
+        private float height;
+
+        // Variables de posición absolutas en el mundo (actualizadas por el dueño de la Hitbox).
+        private float worldX;
+        private float worldY;
 
         public Hitbox(float width, float height, float offsetX = 0, float offsetY = 0)
         {
-            Width = width;
-            Height = height;
-            OffsetX = offsetX;
-            OffsetY = offsetY;
+            this.width = width;
+            this.height = height;
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
         }
 
-        public bool CheckCollision(float myX, float myY, float otherX, float otherY, Hitbox otherHitbox)
+        // Método para que la entidad dueña actualice la posición espacial de la Hitbox.
+        public void UpdatePosition(float ownerX, float ownerY)
         {
-            float myActualX = myX + OffsetX;
-            float myActualY = myY + OffsetY;
-            float otherActualX = otherX + otherHitbox.OffsetX;
-            float otherActualY = otherY + otherHitbox.OffsetY;
+            this.worldX = ownerX + this.offsetX;
+            this.worldY = ownerY + this.offsetY;
+        }
 
-            return myActualX < otherActualX + otherHitbox.Width &&
-                   myActualX + Width > otherActualX &&
-                   myActualY < otherActualY + otherHitbox.Height &&
-                   myActualY + Height > otherActualY;
+        // 1. Refactorización de Colisiones: Hitbox es la única encargada de la matemática espacial.
+        // Ahora solo recibe otra Hitbox, ocultando por completo las coordenadas al exterior (GameLevel).
+        public bool CheckCollision(Hitbox otherHitbox)
+        {
+            return this.worldX < otherHitbox.worldX + otherHitbox.width &&
+                   this.worldX + this.width > otherHitbox.worldX &&
+                   this.worldY < otherHitbox.worldY + otherHitbox.height &&
+                   this.worldY + this.height > otherHitbox.worldY;
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿namespace EngineGDI
+namespace EngineGDI
 {
     public abstract class FallingObject
     {
-        public float PosX { get; protected set; }
-        public float PosY { get; protected set; }
+        // 1. Encapsulamiento: Variables protegidas en lugar de propiedades auto-implementadas públicas.
+        protected float posX;
+        protected float posY;
         public bool IsActive { get; protected set; }
         public Hitbox Collider { get; protected set; } // Cambiado a protected para editarlo en los hijos
 
@@ -13,8 +14,8 @@
 
         public FallingObject(float startX, float startY, float speed)
         {
-            PosX = startX;
-            PosY = startY;
+            posX = startX;
+            posY = startY;
             this.speed = speed;
             IsActive = true;
         }
@@ -22,13 +23,17 @@
         public void Update(float deltaTime)
         {
             if (!IsActive) return;
-            PosY += speed * deltaTime;
-            if (PosY > 500f) IsActive = false;
+            posY += speed * deltaTime;
+            if (posY > 500f) IsActive = false;
+
+            // Sincronizamos el Hitbox con la nueva posición
+            if (Collider != null)
+                Collider.UpdatePosition(posX, posY);
         }
 
         public void Render()
         {
-            if (IsActive) Engine.Draw(texturePath, PosX, PosY, scale, scale, 0, 0f, 0f);
+            if (IsActive) Engine.Draw(texturePath, posX, posY, scale, scale, 0, 0f, 0f);
         }
 
         public void Destroy() => IsActive = false;
@@ -52,7 +57,7 @@
         public BadItem(float startX, float startY, float speed) : base(startX, startY, speed)
         {
             texturePath = "Textures\\bad.png";
-            scale = 0.18f; // BOMBA MÁS GRANDE
+            scale = 0.50f; // BOMBA MÁS GRANDE
             Collider = new Hitbox(50f, 50f);
         }
         public override void ApplyEffect() => GameManager.Instance.LoseLife();
