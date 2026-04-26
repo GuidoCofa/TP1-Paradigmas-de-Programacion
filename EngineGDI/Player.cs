@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Forms;
 
 namespace EngineGDI
@@ -12,9 +13,9 @@ namespace EngineGDI
 
         // --- CAMBIOS PARA MOVIMIENTO FLUIDO ---
         private float velocityX = 0f;
-        private const float ACCEL = 10000f;  // Qué tan rápido arranca
+        private const float ACCEL = 1000f;  // Qué tan rápido arranca
         private const float MAX_SPEED = 2000f;
-        private const float SCALE = 0.12f; // Un poco más chico como pediste
+        private const float SCALE = 1f; 
 
         private Animation runAnimation;
 
@@ -30,15 +31,22 @@ namespace EngineGDI
             Collider = new Hitbox(50f, 10f, 15f, 0f);
             Collider.UpdatePosition(posX, posY);
 
-            string[] frames = { "Textures\\player_1.png", "Textures\\player_2.png", "Textures\\player_3.png", "Textures\\player_4.png" };
+            string[] frames = { "Textures\\Character1.png"
+                    , "Textures\\Character2.png"
+                    , "Textures\\Character3.png"
+                    , "Textures\\Character4.png"
+                    , "Textures\\Character5.png"
+                    , "Textures\\Character6.png"
+                    , "Textures\\Character7.png"
+                    , "Textures\\Character8.png" };
             runAnimation = new Animation(frames, 10f, true);
         }
 
         public void Input()
         {
             // Detectamos dirección de forma continua al mantener la tecla presionada
-            if (Engine.IsKeyDown(Keys.Left)) velocityX -= ACCEL * Program.deltaTime;
-            else if (Engine.IsKeyDown(Keys.Right)) velocityX += ACCEL * Program.deltaTime;
+            if (Engine.IsKeyDown(Keys.A)) velocityX -= ACCEL * Program.deltaTime;
+            else if (Engine.IsKeyDown(Keys.D)) velocityX += ACCEL * Program.deltaTime;
             else velocityX = 0; // Se detiene de inmediato cuando no se presiona nada
 
             // Limitamos velocidad máxima
@@ -54,8 +62,10 @@ namespace EngineGDI
 
         public void Update(float deltaTime)
         {
-            runAnimation.Update(deltaTime);
-            // Sincronizamos la posición de la Hitbox con la posición interna del Player.
+            if (Math.Abs(velocityX) > 1f)
+                runAnimation.Update(deltaTime);
+            else
+                runAnimation.Reset();
             Collider.UpdatePosition(posX, posY);
         }
 

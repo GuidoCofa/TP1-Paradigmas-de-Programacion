@@ -4,18 +4,34 @@ namespace EngineGDI
 {
     public class Menu
     {
+        private int selectedOption = 0;
+
         public void Input()
         {
+            // Navegación
+            if (Engine.OnKeyDown(Keys.W))
+                selectedOption--;
+
+            if (Engine.OnKeyDown(Keys.S))
+                selectedOption++;
+
+            // Loop entre opciones
+            if (selectedOption < 0) selectedOption = 1;
+            if (selectedOption > 1) selectedOption = 0;
+
+            // Selección
             if (Engine.OnKeyDown(Keys.Return))
             {
-                // 1. Reiniciamos los datos globales en el Singleton
-                GameManager.Instance.StartNewGame();
-
-                // 2. Creamos un nivel nuevo desde cero
-                Program.level = new GameLevel();
-
-                // 3. Cambiamos el estado
-                Program.currentState = Program.GameState.Playing;
+                if (selectedOption == 0) // PLAY
+                {
+                    GameManager.Instance.StartNewGame();
+                    Program.level = new GameLevel();
+                    Program.currentState = Program.GameState.Playing;
+                }
+                else if (selectedOption == 1) // EXIT
+                {
+                    Engine.Window.Close();
+                }
             }
         }
 
@@ -23,22 +39,20 @@ namespace EngineGDI
 
         public void Render()
         {
-            // Opcional: Si tenés una imagen "Textures\menu.png", descomentá la línea de abajo:
-            // Engine.Draw("Textures\\menu.png", 0, 0, 1f, 1f, 0, 0f, 0f);
+            // Fondo
+            Engine.Draw("Textures\\menuscreen.png", 0, 0, 2f, 1.75f);
 
-            Engine.ClearDebug();
-            Engine.DebugLog("==============================");
-            Engine.DebugLog("          CATCH GAME          ");
-            Engine.DebugLog("==============================");
-            Engine.DebugLog("");
-            Engine.DebugLog("  Use LEFT and RIGHT arrows to move.");
-            Engine.DebugLog("  Catch the GOOD items (+10 points).");
-            Engine.DebugLog("  Avoid the BAD items (-1 life).");
-            Engine.DebugLog("");
-            Engine.DebugLog($"  Goal: Reach {GameManager.Instance.TargetScore} points.");
-            Engine.DebugLog("");
-            Engine.DebugLog("  Press ENTER to Start");
-            Engine.DebugLog("==============================");
+            // PLAY
+            if (selectedOption == 0)
+                Engine.Draw("Textures\\playbuttonselect.png", 350, 250, 1f, 1f);
+            else
+                Engine.Draw("Textures\\playbutton.png", 350, 250, 1f, 1f);
+
+            // EXIT
+            if (selectedOption == 1)
+                Engine.Draw("Textures\\exitbuttonselect.png", 350, 300, 1f, 1f);
+            else
+                Engine.Draw("Textures\\exitbutton.png", 350, 300, 1f, 1f);
         }
     }
 }

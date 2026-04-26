@@ -4,11 +4,31 @@ namespace EngineGDI
 {
     public class VictoryScreen
     {
+        private int selectedOption = 0;
         public void Input()
         {
-            if (Engine.OnKeyDown(Keys.Return) || Engine.OnKeyDown(Keys.Escape))
+            if (Engine.OnKeyDown(Keys.W))
+                selectedOption--;
+
+            if (Engine.OnKeyDown(Keys.S))
+                selectedOption++;
+
+            // Loop
+            if (selectedOption < 0) selectedOption = 1;
+            if (selectedOption > 1) selectedOption = 0;
+
+            if (Engine.OnKeyDown(Keys.Return))
             {
-                Program.currentState = Program.GameState.Menu;
+                if (selectedOption == 0) // RETRY
+                {
+                    GameManager.Instance.StartNewGame();
+                    Program.level = new GameLevel();
+                    Program.currentState = Program.GameState.Playing;
+                }
+                else if (selectedOption == 1) // EXIT
+                {
+                    Program.currentState = Program.GameState.Menu;
+                }
             }
         }
 
@@ -16,19 +36,20 @@ namespace EngineGDI
 
         public void Render()
         {
-            // Opcional: Si tenés una imagen "Textures\victory.png", descomentá esto:
-            // Engine.Draw("Textures\\victory.png", 0, 0, 1f, 1f, 0, 0f, 0f);
+            // Fondo de victoria
+            Engine.Draw("Textures\\victory.png", 0, 0, 2f, 1.75f);
 
-            Engine.ClearDebug();
-            Engine.DebugLog("==============================");
-            Engine.DebugLog("           VICTORY!           ");
-            Engine.DebugLog("==============================");
-            Engine.DebugLog("");
-            Engine.DebugLog("  Congratulations! You reached the goal!");
-            Engine.DebugLog($"  Final Score: {GameManager.Instance.Score}");
-            Engine.DebugLog($"  Lives remaining: {GameManager.Instance.Lives}");
-            Engine.DebugLog("");
-            Engine.DebugLog("  Press ENTER to return to Menu");
+            // RETRY
+            if (selectedOption == 0)
+                Engine.Draw("Textures\\retrybuttonselect.png", 350, 250, 1f, 1f);
+            else
+                Engine.Draw("Textures\\retrybutton.png", 350, 250, 1f, 1f);
+
+            // EXIT
+            if (selectedOption == 1)
+                Engine.Draw("Textures\\exitbuttonselect2.png", 350, 330, 1f, 1f);
+            else
+                Engine.Draw("Textures\\exitbutton2.png", 350, 330, 1f, 1f);
         }
     }
 }

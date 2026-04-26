@@ -8,6 +8,7 @@ namespace EngineGDI
         private List<FallingObject> items;
         private Spawner itemSpawner;
 
+
         public GameLevel()
         {
             player = new Player(380, 350);
@@ -56,6 +57,7 @@ namespace EngineGDI
 
         public void Render()
         {
+            Engine.Draw("Textures\\background.png", 0, 0, 2f, 1.7f);
             player.Render();
             foreach (var item in items) item.Render();
 

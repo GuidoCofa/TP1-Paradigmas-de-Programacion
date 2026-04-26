@@ -45,7 +45,7 @@ namespace EngineGDI
         public GoodItem(float startX, float startY, float speed) : base(startX, startY, speed)
         {
             texturePath = "Textures\\good.png";
-            scale = 0.07f; // MANZANA MÁS CHICA
+            scale = 1f; // MANZANA MÁS CHICA
             // Hitbox pequeña para que cuente solo si cae en el medio
             Collider = new Hitbox(20f, 20f, 5f, 5f);
         }
@@ -57,7 +57,7 @@ namespace EngineGDI
         public BadItem(float startX, float startY, float speed) : base(startX, startY, speed)
         {
             texturePath = "Textures\\bad.png";
-            scale = 0.50f; // BOMBA MÁS GRANDE
+            scale = 1f; // BOMBA MÁS GRANDE
             Collider = new Hitbox(50f, 50f);
         }
         public override void ApplyEffect() => GameManager.Instance.LoseLife();
