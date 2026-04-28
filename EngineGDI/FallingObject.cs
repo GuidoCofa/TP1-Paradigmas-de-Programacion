@@ -2,11 +2,11 @@ namespace EngineGDI
 {
     public abstract class FallingObject
     {
-        // 1. Encapsulamiento: Variables protegidas en lugar de propiedades auto-implementadas públicas.
+        
         protected float posX;
         protected float posY;
         public bool IsActive { get; protected set; }
-        public Hitbox Collider { get; protected set; } // Cambiado a protected para editarlo en los hijos
+        public Hitbox Collider { get; protected set; } 
 
         protected float speed;
         protected string texturePath;
@@ -26,7 +26,7 @@ namespace EngineGDI
             posY += speed * deltaTime;
             if (posY > 500f) IsActive = false;
 
-            // Sincronizamos el Hitbox con la nueva posición
+            
             if (Collider != null)
                 Collider.UpdatePosition(posX, posY);
         }
@@ -45,8 +45,7 @@ namespace EngineGDI
         public GoodItem(float startX, float startY, float speed) : base(startX, startY, speed)
         {
             texturePath = "Textures\\good.png";
-            scale = 1f; // MANZANA MÁS CHICA
-            // Hitbox pequeña para que cuente solo si cae en el medio
+            scale = 1f; 
             Collider = new Hitbox(20f, 20f, 5f, 5f);
         }
         public override void ApplyEffect()
@@ -61,7 +60,7 @@ namespace EngineGDI
         public BadItem(float startX, float startY, float speed) : base(startX, startY, speed)
         {
             texturePath = "Textures\\bad.png";
-            scale = 1f; // BOMBA MÁS GRANDE
+            scale = 1f;
             Collider = new Hitbox(50f, 50f);
         }
         public override void ApplyEffect()

@@ -52,8 +52,7 @@ namespace EngineGDI
         {
             if (!item.IsActive) return;
 
-            // 1. Refactorización de Colisiones: GameLevel NO tiene acceso a la posición real del Player ni del Item.
-            // GameLevel solo delega la verificación espacial a la Hitbox, asegurando el encapsulamiento.
+
             if (player.Collider.CheckCollision(item.Collider))
             {
                 item.ApplyEffect();
@@ -68,8 +67,15 @@ namespace EngineGDI
             foreach (var item in items) item.Render();
 
             Engine.ClearDebug();
+
+            Engine.DebugLog("");
+            Engine.DebugLog("");
+            Engine.DebugLog("");
+            Engine.DebugLog("");
+
             Engine.DebugLog($"SCORE: {GameManager.Instance.Score} / {GameManager.Instance.TargetScore}");
             Engine.DebugLog($"LIVES: {GameManager.Instance.Lives}");
+
         }
     }
 }

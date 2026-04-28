@@ -121,7 +121,7 @@ namespace EngineGDI
         {
             return pressedKeys.Contains(key);
         }
-        // Alias de compatibilidad: mismo comportamiento que OnKeyDown
+        
         public static bool IsKeyPressed(Keys key)
         {
             return OnKeyDown(key);
@@ -152,7 +152,7 @@ namespace EngineGDI
                         var img = textures[cmd.TexturePath];
                         float width = img.Width * cmd.ScaleX;
                         float height = img.Height * cmd.ScaleY;
-                        // Transformación: traslación al punto, rotación, luego dibujar con offset
+                        
                         e.Graphics.TranslateTransform(cmd.X, cmd.Y);
                         e.Graphics.RotateTransform(cmd.Angle);
                         e.Graphics.DrawImage(

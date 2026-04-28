@@ -11,19 +11,19 @@ namespace EngineGDI
         public static int SCREEN_WIDTH = 800;
         public static int SCREEN_HEIGHT = 450;
 
-        // Máquina de estados requerida para las consignas 1, 3 y 4
+        
         public enum GameState { Menu, Playing, Victory, Defeat }
         public static GameState currentState = GameState.Menu;
 
         private static Menu menu;
-        public static GameLevel level; // Lo hacemos público para instanciarlo desde el menú
+        public static GameLevel level; 
         private static VictoryScreen victory;
         private static DefeatScreen defeat;
 
         [STAThread]
         static void Main()
         {
-            Engine.Initialize("Catch Game - Examen POO", SCREEN_WIDTH, SCREEN_HEIGHT, false);
+            Engine.Initialize("Grupo Gordos vicios - parcial 1 ", SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
             menu = new Menu();
             victory = new VictoryScreen();
@@ -34,7 +34,7 @@ namespace EngineGDI
                 Engine.UpdateWindow();
                 CalcDeltaTime();
 
-                // Limpiamos el fondo (Gris oscuro)
+               
                 Engine.Clear(Color.FromArgb(30, 30, 30));
 
                 Input();
