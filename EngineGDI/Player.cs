@@ -18,6 +18,8 @@ namespace EngineGDI
         private const float SCALE = 1f; 
 
         private Animation runAnimation;
+        private float stepTimer = 0f;
+        private const float STEP_INTERVAL = 0.3f; // Intervalo para el sonido de pasos
 
         public Player(float startX, float startY)
         {
@@ -63,9 +65,20 @@ namespace EngineGDI
         public void Update(float deltaTime)
         {
             if (Math.Abs(velocityX) > 1f)
+            {
                 runAnimation.Update(deltaTime);
+                stepTimer += deltaTime;
+                if (stepTimer >= STEP_INTERVAL)
+                {
+                    Engine.PlaySound(@"Sounds\move.wav");
+                    stepTimer -= STEP_INTERVAL;
+                }
+            }
             else
+            {
                 runAnimation.Reset();
+                stepTimer = STEP_INTERVAL; // Para que el sonido se reproduzca de inmediato al empezar a moverse
+            }
             Collider.UpdatePosition(posX, posY);
         }
 

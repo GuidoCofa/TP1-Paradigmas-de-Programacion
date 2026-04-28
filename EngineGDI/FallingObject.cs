@@ -49,7 +49,11 @@ namespace EngineGDI
             // Hitbox pequeña para que cuente solo si cae en el medio
             Collider = new Hitbox(20f, 20f, 5f, 5f);
         }
-        public override void ApplyEffect() => GameManager.Instance.AddScore(10);
+        public override void ApplyEffect()
+        {
+            Engine.PlaySound(@"Sounds\score.wav");
+            GameManager.Instance.AddScore(10);
+        }
     }
 
     public class BadItem : FallingObject
@@ -60,6 +64,9 @@ namespace EngineGDI
             scale = 1f; // BOMBA MÁS GRANDE
             Collider = new Hitbox(50f, 50f);
         }
-        public override void ApplyEffect() => GameManager.Instance.LoseLife();
+        public override void ApplyEffect()
+        {
+            GameManager.Instance.LoseLife();
+        }
     }
 }

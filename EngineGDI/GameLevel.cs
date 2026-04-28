@@ -37,9 +37,15 @@ namespace EngineGDI
             items.RemoveAll(i => !i.IsActive);
 
             if (GameManager.Instance.IsVictory())
+            {
+                Engine.PlaySound(@"Sounds\victory.wav");
                 Program.currentState = Program.GameState.Victory;
+            }
             else if (GameManager.Instance.IsDefeat())
+            {
+                Engine.PlaySound(@"Sounds\defeat.wav");
                 Program.currentState = Program.GameState.Defeat;
+            }
         }
 
         private void CheckCollision(FallingObject item)
