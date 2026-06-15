@@ -1,32 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EngineGDI;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EngineGDI;
 
 namespace UnitTestProject1
 {
     [TestClass]
     public class TestGame
     {
+        // Consigna 8: Escribir funciones de Test utilizando el tipo de proyecto "Unit Test"
         [TestMethod]
-        public void TestGetDamage()
+        public void TestGameManagerScore()
         {
-            Character c = new Character(new Vector2(0, 0), 95, 101, null);
-            c.DamageLife(5);
-
-            Assert.AreEqual(95.0f, c.Life);
+            GameManager.Instance.StartNewGame();
+            GameManager.Instance.AddScore(20);
+            Assert.AreEqual(20, GameManager.Instance.Score);
         }
 
         [TestMethod]
-        public void TestGetDamage2()
+        public void TestGameManagerLoseLife()
         {
-            Character1 c = new Character1(new Vector2(0, 0), 95, 101, null);
-            c.DamageLife(6);
+            GameManager.Instance.StartNewGame();
+            int initialLives = GameManager.Instance.Lives;
+            GameManager.Instance.LoseLife();
+            Assert.AreEqual(initialLives - 1, GameManager.Instance.Lives);
+        }
 
-            Assert.AreNotEqual(95.0f, c.Life);
+        [TestMethod]
+        public void TestItemFactory()
+        {
+            var good = ItemFactory.CreateItem("good", 0, 0, 10);
+            Assert.IsTrue(good is GoodItem);
+            
+            var bad = ItemFactory.CreateItem("bad", 0, 0, 10);
+            Assert.IsTrue(bad is BadItem);
         }
     }
 }

@@ -3,11 +3,12 @@ using System.Windows.Forms;
 
 namespace EngineGDI
 {
-    public class Player
+    // Consigna 7: Uso de interfaces
+    public class Player : IUpdatable, IRenderable, ICollidable
     {
 
-        private float posX;
-        private float posY;
+        // Consigna 5: Componente Transform
+        public Transform TransformComp { get; private set; }
         public Hitbox Collider { get; private set; }
 
   
@@ -22,12 +23,10 @@ namespace EngineGDI
 
         public Player(float startX, float startY)
         {
-            posX = startX;
-            posY = startY;
-
+            TransformComp = new Transform(startX, startY);
 
             Collider = new Hitbox(50f, 10f, 15f, 0f);
-            Collider.UpdatePosition(posX, posY);
+            Collider.UpdatePosition(TransformComp.Position.X, TransformComp.Position.Y);
 
             string[] frames = { "Textures\\Character1.png"
                     , "Textures\\Character2.png"
@@ -51,11 +50,11 @@ namespace EngineGDI
             if (velocityX > MAX_SPEED) velocityX = MAX_SPEED;
             if (velocityX < -MAX_SPEED) velocityX = -MAX_SPEED;
 
-            posX += velocityX * Program.deltaTime;
+            TransformComp.Position.X += velocityX * Program.deltaTime;
 
             
-            if (posX < 0) { posX = 0; velocityX = 0; }
-            if (posX > 800 - 80) { posX = 800 - 80; velocityX = 0; }
+            if (TransformComp.Position.X < 0) { TransformComp.Position.X = 0; velocityX = 0; }
+            if (TransformComp.Position.X > 800 - 80) { TransformComp.Position.X = 800 - 80; velocityX = 0; }
         }
 
         public void Update(float deltaTime)
@@ -75,12 +74,12 @@ namespace EngineGDI
                 runAnimation.Reset();
                 stepTimer = STEP_INTERVAL; 
             }
-            Collider.UpdatePosition(posX, posY);
+            Collider.UpdatePosition(TransformComp.Position.X, TransformComp.Position.Y);
         }
 
         public void Render()
         {
-            Engine.Draw(runAnimation.CurrentSprite, posX, posY, SCALE, SCALE, 0, 0f, 0f);
+            Engine.Draw(runAnimation.CurrentSprite, TransformComp.Position.X, TransformComp.Position.Y, SCALE, SCALE, 0, 0f, 0f);
         }
     }
 }

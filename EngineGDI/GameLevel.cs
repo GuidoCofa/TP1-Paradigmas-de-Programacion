@@ -14,6 +14,10 @@ namespace EngineGDI
             player = new Player(380, 350);
             items = new List<FallingObject>();
             itemSpawner = new Spawner(items);
+
+            // Consigna 3: Usar eventos
+            GameManager.Instance.OnLifeLost += () => Engine.DebugLog("Evento: ¡Vida perdida!");
+            GameManager.Instance.OnScoreAdded += () => Engine.DebugLog("Evento: ¡Puntaje obtenido!");
         }
 
         public void Input()
@@ -34,7 +38,14 @@ namespace EngineGDI
                 CheckCollision(item);
             }
 
-            items.RemoveAll(i => !i.IsActive);
+            for (int i = items.Count - 1; i >= 0; i--)
+            {
+                if (!items[i].IsActive)
+                {
+                    itemSpawner.ReturnItem(items[i]);
+                    items.RemoveAt(i);
+                }
+            }
 
             if (GameManager.Instance.IsVictory())
             {

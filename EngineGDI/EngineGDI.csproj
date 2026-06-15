@@ -59,6 +59,12 @@
     <Compile Include="GameManager.cs" />
     <Compile Include="Spawner.cs" />
     <Compile Include="VictoryScreen.cs" />
+    <Compile Include="Vector2.cs" />
+    <Compile Include="Transform.cs" />
+    <Compile Include="Renderer.cs" />
+    <Compile Include="GenericPool.cs" />
+    <Compile Include="Interfaces.cs" />
+    <Compile Include="ItemFactory.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

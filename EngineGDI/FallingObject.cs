@@ -1,21 +1,29 @@
 namespace EngineGDI
 {
-    public abstract class FallingObject
+    // Consigna 1: Caso de herencia (GoodItem y BadItem heredan de FallingObject)
+    // Consigna 7: Uso de interfaces
+    public abstract class FallingObject : IUpdatable, IRenderable, ICollidable
     {
-        
-        protected float posX;
-        protected float posY;
         public bool IsActive { get; protected set; }
         public Hitbox Collider { get; protected set; } 
 
         protected float speed;
-        protected string texturePath;
-        protected float scale;
+
+        // Consigna 5 y 6: Componente Transform y Renderer
+        public Transform TransformComp { get; protected set; }
+        public Renderer RendererComp { get; protected set; }
 
         public FallingObject(float startX, float startY, float speed)
         {
-            posX = startX;
-            posY = startY;
+            TransformComp = new Transform(startX, startY);
+            this.speed = speed;
+            IsActive = true;
+        }
+
+        public virtual void Reset(float startX, float startY, float speed)
+        {
+            TransformComp.Position.X = startX;
+            TransformComp.Position.Y = startY;
             this.speed = speed;
             IsActive = true;
         }
@@ -23,17 +31,17 @@ namespace EngineGDI
         public void Update(float deltaTime)
         {
             if (!IsActive) return;
-            posY += speed * deltaTime;
-            if (posY > 500f) IsActive = false;
+            TransformComp.Position.Y += speed * deltaTime;
+            if (TransformComp.Position.Y > 500f) IsActive = false;
 
-            
             if (Collider != null)
-                Collider.UpdatePosition(posX, posY);
+                Collider.UpdatePosition(TransformComp.Position.X, TransformComp.Position.Y);
         }
 
         public void Render()
         {
-            if (IsActive) Engine.Draw(texturePath, posX, posY, scale, scale, 0, 0f, 0f);
+            if (IsActive && RendererComp != null) 
+                RendererComp.Draw(TransformComp);
         }
 
         public void Destroy() => IsActive = false;
@@ -44,8 +52,7 @@ namespace EngineGDI
     {
         public GoodItem(float startX, float startY, float speed) : base(startX, startY, speed)
         {
-            texturePath = "Textures\\good.png";
-            scale = 1f; 
+            RendererComp = new Renderer("Textures\\good.png", 0, 0);
             Collider = new Hitbox(20f, 20f, 5f, 5f);
         }
         public override void ApplyEffect()
@@ -59,8 +66,7 @@ namespace EngineGDI
     {
         public BadItem(float startX, float startY, float speed) : base(startX, startY, speed)
         {
-            texturePath = "Textures\\bad.png";
-            scale = 1f;
+            RendererComp = new Renderer("Textures\\bad.png", 0, 0);
             Collider = new Hitbox(50f, 50f);
         }
         public override void ApplyEffect()
