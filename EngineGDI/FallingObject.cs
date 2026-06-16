@@ -22,8 +22,7 @@ namespace EngineGDI
 
         public virtual void Reset(float startX, float startY, float speed)
         {
-            TransformComp.Position.X = startX;
-            TransformComp.Position.Y = startY;
+            TransformComp.Position = new Vector2(startX, startY);
             this.speed = speed;
             IsActive = true;
         }
@@ -31,7 +30,10 @@ namespace EngineGDI
         public void Update(float deltaTime)
         {
             if (!IsActive) return;
-            TransformComp.Position.Y += speed * deltaTime;
+            var pos = TransformComp.Position;
+            pos.Y += speed * deltaTime;
+            TransformComp.Position = pos;
+
             if (TransformComp.Position.Y > 500f) IsActive = false;
 
             if (Collider != null)

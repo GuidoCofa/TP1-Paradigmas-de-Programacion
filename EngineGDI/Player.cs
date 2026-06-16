@@ -50,11 +50,13 @@ namespace EngineGDI
             if (velocityX > MAX_SPEED) velocityX = MAX_SPEED;
             if (velocityX < -MAX_SPEED) velocityX = -MAX_SPEED;
 
-            TransformComp.Position.X += velocityX * Program.deltaTime;
+            var pos = TransformComp.Position;
+            pos.X += velocityX * Program.deltaTime;
 
-            
-            if (TransformComp.Position.X < 0) { TransformComp.Position.X = 0; velocityX = 0; }
-            if (TransformComp.Position.X > 800 - 80) { TransformComp.Position.X = 800 - 80; velocityX = 0; }
+            if (pos.X < 0) { pos.X = 0; velocityX = 0; }
+            if (pos.X > 800 - 80) { pos.X = 800 - 80; velocityX = 0; }
+
+            TransformComp.Position = pos;
         }
 
         public void Update(float deltaTime)
