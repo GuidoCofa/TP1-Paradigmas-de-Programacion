@@ -23,7 +23,7 @@ namespace EngineGDI
         [STAThread]
         static void Main()
         {
-            Engine.Initialize("Grupo Gordos vicios - parcial 1 ", SCREEN_WIDTH, SCREEN_HEIGHT, false);
+            Engine.Initialize("Grupo Gordos vicios - parcial 2 ", SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
             menu = new Menu();
             victory = new VictoryScreen();
