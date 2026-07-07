@@ -24,8 +24,9 @@ namespace EngineGDI
             {
                 if (selectedOption == 0) 
                 {
-                    GameManager.Instance.StartNewGame();
-                    Program.level = new GameLevel();
+                    Program.currentLevelIndex = 1;
+                    GameManager.Instance.StartNewGame(1);
+                    Program.level = new Level1();
                     Program.currentState = Program.GameState.Playing;
                 }
                 else if (selectedOption == 1) 

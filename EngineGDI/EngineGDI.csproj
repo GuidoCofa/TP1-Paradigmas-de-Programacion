@@ -65,6 +65,9 @@
     <Compile Include="GenericPool.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="ItemFactory.cs" />
+    <Compile Include="Level1.cs" />
+    <Compile Include="Level2.cs" />
+    <Compile Include="Level3.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

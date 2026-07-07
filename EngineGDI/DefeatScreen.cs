@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+using System.Windows.Forms;
 
 namespace EngineGDI
 {
@@ -21,8 +21,14 @@ namespace EngineGDI
             {
                 if (selectedOption == 0) 
                 {
-                    GameManager.Instance.StartNewGame();
-                    Program.level = new GameLevel();
+                    GameManager.Instance.StartNewGame(Program.currentLevelIndex);
+                    if (Program.currentLevelIndex == 1)
+                        Program.level = new Level1();
+                    else if (Program.currentLevelIndex == 2)
+                        Program.level = new Level2();
+                    else
+                        Program.level = new Level3();
+                    
                     Program.currentState = Program.GameState.Playing;
                 }
                 else if (selectedOption == 1) 

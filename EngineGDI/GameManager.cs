@@ -38,11 +38,33 @@ namespace EngineGDI
         public event System.Action OnScoreAdded;
         public event System.Action OnLifeLost;
 
-        public void StartNewGame()
+        private int levelStartScore = 0;
+
+        public void SaveLevelScore()
         {
-            Score = 0;
-            Lives = 3;
-            TargetScore = 50;
+            levelStartScore = Score;
+        }
+
+        public void StartNewGame(int levelIndex)
+        {
+            Lives = 3; // Siempre restablece las vidas al reintentar o cambiar de nivel
+            
+            if (levelIndex == 1)
+            {
+                Score = 0;
+                levelStartScore = 0;
+                TargetScore = 50; // Objetivo nivel 1
+            }
+            else if (levelIndex == 2)
+            {
+                Score = levelStartScore; // Revertir el score a como estaba al inicio del nivel
+                TargetScore = levelStartScore + 100; // Requiere 100 puntos más
+            }
+            else if (levelIndex == 3)
+            {
+                Score = levelStartScore;
+                TargetScore = levelStartScore + 150; // Requiere 150 puntos más
+            }
         }
 
         public void AddScore(int amount)

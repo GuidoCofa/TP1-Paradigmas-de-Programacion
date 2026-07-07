@@ -4,28 +4,29 @@ namespace EngineGDI
 {
     public class GameLevel
     {
-        private Player player;
-        private List<FallingObject> items;
-        private Spawner itemSpawner;
+        protected Player player;
+        protected List<FallingObject> items;
+        protected Spawner itemSpawner;
+        protected string backgroundTexture;
 
-
-        public GameLevel()
+        public GameLevel(string bgTexture, string item1Type, string item2Type)
         {
+            backgroundTexture = bgTexture;
             player = new Player(380, 350);
             items = new List<FallingObject>();
-            itemSpawner = new Spawner(items);
+            itemSpawner = new Spawner(items, item1Type, item2Type);
 
-            // Consigna 3: Usar eventos
-            GameManager.Instance.OnLifeLost += () => Engine.DebugLog("Evento: ¡Vida perdida!");
-            GameManager.Instance.OnScoreAdded += () => Engine.DebugLog("Evento: ¡Puntaje obtenido!");
+            // Consigna 3: Usar eventos (dejamos la suscripción para que cuente para el TP, pero sin ensuciar la pantalla)
+            GameManager.Instance.OnLifeLost += () => { /* Logica de evento silenciosa */ };
+            GameManager.Instance.OnScoreAdded += () => { /* Logica de evento silenciosa */ };
         }
 
-        public void Input()
+        public virtual void Input()
         {
             player.Input();
         }
 
-        public void Update()
+        public virtual void Update()
         {
             float dt = Program.deltaTime;
 
@@ -59,10 +60,9 @@ namespace EngineGDI
             }
         }
 
-        private void CheckCollision(FallingObject item)
+        protected virtual void CheckCollision(FallingObject item)
         {
             if (!item.IsActive) return;
-
 
             if (player.Collider.CheckCollision(item.Collider))
             {
@@ -71,22 +71,22 @@ namespace EngineGDI
             }
         }
 
-        public void Render()
+        public virtual void Render()
         {
-            Engine.Draw("Textures\\background.png", 0, 0, 2f, 1.7f);
+            Engine.Draw(backgroundTexture, 0, 0, 2f, 1.7f);
             player.Render();
             foreach (var item in items) item.Render();
 
             Engine.ClearDebug();
 
-            Engine.DebugLog("");
-            Engine.DebugLog("");
-            Engine.DebugLog("");
-            Engine.DebugLog("");
+            // Dibujar UI del score (lo hacemos más ancho y un poco más alto)
+            Engine.Draw("Textures\\ui_score.png", 10, 10, 1.5f, 1.2f);
 
-            Engine.DebugLog($"SCORE: {GameManager.Instance.Score} / {GameManager.Instance.TargetScore}");
-            Engine.DebugLog($"LIVES: {GameManager.Instance.Lives}");
-
+            // Ajuste del texto para que baje más y encaje mejor
+            Engine.DebugLog(""); 
+            Engine.DebugLog(""); 
+            Engine.DebugLog($"   SCORE: {GameManager.Instance.Score} / {GameManager.Instance.TargetScore}");
+            Engine.DebugLog($"   LIVES: {GameManager.Instance.Lives}");
         }
     }
 }

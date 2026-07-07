@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Media;
@@ -80,7 +80,21 @@ namespace EngineGDI
         public static void Draw(string path, float x, float y, float scaleX = 1f, float scaleY = 1f, float angle = 0f, float offsetX = 0f, float offsetY = 0f)
         {
             if (!textures.ContainsKey(path))
-                textures[path] = Image.FromFile(path);
+            {
+                try 
+                {
+                    textures[path] = Image.FromFile(path);
+                }
+                catch (System.Exception)
+                {
+                    // Si no encuentra la imagen, crea un cuadrado magenta temporal para que no crashee
+                    Bitmap bmp = new Bitmap(50, 50);
+                    using (Graphics g = Graphics.FromImage(bmp)) { g.Clear(Color.Magenta); }
+                    textures[path] = bmp;
+                    DebugLog($"Falta imagen: {path}");
+                }
+            }
+            
             drawQueue.Add(new DrawCommand
             {
                 TexturePath = path,

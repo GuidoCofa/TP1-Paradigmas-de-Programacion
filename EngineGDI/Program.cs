@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 
 namespace EngineGDI
@@ -14,6 +14,7 @@ namespace EngineGDI
         
         public enum GameState { Menu, Playing, Victory, Defeat }
         public static GameState currentState = GameState.Menu;
+        public static int currentLevelIndex = 1;
 
         private static Menu menu;
         public static GameLevel level; 

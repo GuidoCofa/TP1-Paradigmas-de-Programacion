@@ -9,26 +9,45 @@ namespace EngineGDI
         private Random rng;
         private float spawnTimer;
 
-        // Consigna 4: Uso de GenericPool
-        private GenericPool<GoodItem> goodPool;
-        private GenericPool<BadItem> badPool;
+        private GenericPool<FallingObject> item1Pool;
+        private GenericPool<FallingObject> item2Pool;
+        private GenericPool<FallingObject> goldenApplePool;
+        private Type item1ClassType;
+        private Type goldenAppleClassType;
 
-        public Spawner(List<FallingObject> listToPopulate)
+        public Spawner(List<FallingObject> listToPopulate, string item1Type, string item2Type)
         {
-          
             targetList = listToPopulate;
             rng = new Random();
             spawnTimer = 0f;
             
-            // Consigna 2: Uso del Factory en la inicialización del Pool
-            goodPool = new GenericPool<GoodItem>(() => (GoodItem)ItemFactory.CreateItem("good", 0, 0, 0));
-            badPool = new GenericPool<BadItem>(() => (BadItem)ItemFactory.CreateItem("bad", 0, 0, 0));
+            item1Pool = new GenericPool<FallingObject>(() => ItemFactory.CreateItem(item1Type, 0, 0, 0));
+            item2Pool = new GenericPool<FallingObject>(() => ItemFactory.CreateItem(item2Type, 0, 0, 0));
+            goldenApplePool = new GenericPool<FallingObject>(() => ItemFactory.CreateItem("golden_apple", 0, 0, 0));
+
+            var temp1 = item1Pool.Get();
+            item1ClassType = temp1.GetType();
+            item1Pool.ReturnToPool(temp1);
+
+            var tempGolden = goldenApplePool.Get();
+            goldenAppleClassType = tempGolden.GetType();
+            goldenApplePool.ReturnToPool(tempGolden);
         }
 
         public void ReturnItem(FallingObject item)
         {
-            if (item is GoodItem good) goodPool.ReturnToPool(good);
-            else if (item is BadItem bad) badPool.ReturnToPool(bad);
+            if (item.GetType() == goldenAppleClassType)
+            {
+                goldenApplePool.ReturnToPool(item);
+            }
+            else if (item.GetType() == item1ClassType) 
+            {
+                item1Pool.ReturnToPool(item);
+            }
+            else
+            {
+                item2Pool.ReturnToPool(item);
+            }
         }
 
         public void Update(float deltaTime)
@@ -38,16 +57,23 @@ namespace EngineGDI
             {
                 spawnTimer = 0f;
                 float randomX = rng.Next(0, 750);
+                double rand = rng.NextDouble();
 
-                if (rng.NextDouble() > 0.3)
+                if (rand > 0.95) // 5% de probabilidad (antes 10%)
                 {
-                    var item = goodPool.Get();
+                    var item = goldenApplePool.Get();
+                    item.Reset(randomX, -50, 250f);
+                    targetList.Add(item);
+                }
+                else if (rand > 0.45) // 45% de probabilidad
+                {
+                    var item = item1Pool.Get();
                     item.Reset(randomX, -50, 150f);
                     targetList.Add(item);
                 }
-                else
+                else // 45% de probabilidad
                 {
-                    var item = badPool.Get();
+                    var item = item2Pool.Get();
                     item.Reset(randomX, -50, 200f);
                     targetList.Add(item);
                 }
