@@ -16,9 +16,9 @@ namespace EngineGDI
             items = new List<FallingObject>();
             itemSpawner = new Spawner(items, item1Type, item2Type);
 
-            // Consigna 3: Usar eventos (dejamos la suscripción para que cuente para el TP, pero sin ensuciar la pantalla)
-            GameManager.Instance.OnLifeLost += () => { /* Logica de evento silenciosa */ };
-            GameManager.Instance.OnScoreAdded += () => { /* Logica de evento silenciosa */ };
+            // Consigna 3: Usar eventos 
+            GameManager.Instance.OnLifeLost += () => { };
+            GameManager.Instance.OnScoreAdded += () => { };
         }
 
         public virtual void Input()
@@ -79,7 +79,7 @@ namespace EngineGDI
 
             Engine.ClearDebug();
 
-            // Dibujar UI del score (lo hacemos más ancho y un poco más alto)
+            // Dibujar UI del score 
             Engine.Draw("Textures\\ui_score.png", 10, 10, 2.5f, 1.2f);
 
             // Ajuste del texto para que baje más y encaje mejor

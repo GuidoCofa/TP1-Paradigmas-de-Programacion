@@ -44,7 +44,7 @@ namespace EngineGDI
         {
             levelStartScore = Score;
         }
-
+    
         public void StartNewGame(int levelIndex)
         {
             Lives = 3; // Siempre restablece las vidas al reintentar o cambiar de nivel

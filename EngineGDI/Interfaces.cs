@@ -1,6 +1,6 @@
 namespace EngineGDI
 {
-    // Consigna 7: Implementar al menos tres interfaces diferentes que tengan sentido en el juego.
+    // Consigna 7: 
     public interface IRenderable
     {
         void Render();
