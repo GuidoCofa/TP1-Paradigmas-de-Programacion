@@ -18,6 +18,7 @@ namespace EngineGDI
                 case "l3_itema": return new L3ItemA(x, y, speed);
                 case "l3_itemb": return new L3ItemB(x, y, speed);
                 case "golden_apple": return new GoldenApple(x, y, speed);
+                case "dead_apple": return new DeadApple(x, y, speed);
                 default: throw new ArgumentException("Tipo de item inválido");
             }
         }

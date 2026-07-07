@@ -171,4 +171,17 @@ namespace EngineGDI
             GameManager.Instance.AddScore(30); // Balanceado: Suma 30 puntos
         }
     }
+
+    public class DeadApple : FallingObject
+    {
+        public DeadApple(float startX, float startY, float speed) : base(startX, startY, speed)
+        {
+            RendererComp = new Renderer("Textures\\dead_apple.png", 0, 0);
+            Collider = new Hitbox(30f, 30f, 5f, 5f);
+        }
+        public override void ApplyEffect()
+        {
+            GameManager.Instance.AddScore(-15);
+        }
+    }
 }

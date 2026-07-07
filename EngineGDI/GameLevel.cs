@@ -80,11 +80,9 @@ namespace EngineGDI
             Engine.ClearDebug();
 
             // Dibujar UI del score (lo hacemos más ancho y un poco más alto)
-            Engine.Draw("Textures\\ui_score.png", 10, 10, 1.5f, 1.2f);
+            Engine.Draw("Textures\\ui_score.png", 10, 10, 2.5f, 1.2f);
 
             // Ajuste del texto para que baje más y encaje mejor
-            Engine.DebugLog(""); 
-            Engine.DebugLog(""); 
             Engine.DebugLog($"   SCORE: {GameManager.Instance.Score} / {GameManager.Instance.TargetScore}");
             Engine.DebugLog($"   LIVES: {GameManager.Instance.Lives}");
         }
